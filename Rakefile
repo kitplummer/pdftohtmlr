@@ -56,7 +56,7 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.autorequire = 'pdftohtml'
 
-  s.files = [ "Rakefile", "README", "MIT-LICENSE" ]
+  s.files = [ "Rakefile", "README.textile", "MIT-LICENSE" ]
   s.files = s.files + Dir.glob( "lib/**/*" ).delete_if { |item| item.include?( "\.svn" ) }
   s.files = s.files + Dir.glob( "test/**/*" ).delete_if { |item| item.include?( "\.svn" ) || item.include?("\.png") }
 end
