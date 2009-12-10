@@ -3,7 +3,6 @@ require 'open3'
 
 module PDFToHTMLR
   class PDFToHTMLRError < RuntimeError; end
-
   VERSION = '0.2.0'
 
   class PdfFile

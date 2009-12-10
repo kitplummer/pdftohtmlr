@@ -8,10 +8,19 @@ class PdfFileTest < Test::Unit::TestCase
   TEST_PDF_PATH = CURRENT_DIR + "test.pdf"
   TEST_PWD_PDF_PATH = CURRENT_DIR + "test_pw.pdf"
   TEST_BAD_PATH = "blah.pdf"
-
+  TEST_NON_PDF = CURRENT_DIR + "pdftohtmlr_test.rb"
+  
   def test_pdffile_new
     file = PdfFile.new(TEST_PDF_PATH, ".", nil, nil)
     assert file
+  end
+  
+  def test_invalid_pdffile
+    e = assert_raise PDFToHTMLRError do 
+      file = PdfFile.new(TEST_NON_PDF, ".", nil, nil)
+      file.convert
+    end
+    puts e
   end
 
   def test_bad_pdffile_new
