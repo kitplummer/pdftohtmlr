@@ -1,0 +1,5 @@
+h1. pdftohtmlr
+
+Wrapper around the command line tool pdftohtml which converts PDF to HTML, go figure.
+
+This gem was inspired by the MiniMagick gem - which does the same thing for ImageMagick (thanks Corey).
