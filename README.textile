@@ -10,7 +10,7 @@ Just pdftohtml and Ruby (1.8.6+ as far as I know).
 
 h1. install
 
-"http://gemcutter.org/gems/pdftohtmlr":"http://gemcutter.org/gems/pdftohtmlr"
+"http://gemcutter.org/gems/pdftohtmlr":http://gemcutter.org/gems/pdftohtmlr
 
 <pre><code>gem install pdftohtmlr</code></pre>
     
