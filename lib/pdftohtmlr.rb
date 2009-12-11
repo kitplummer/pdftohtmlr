@@ -1,10 +1,25 @@
+# The library has a single method for converting PDF files into HTML. The
+# method current takes in the source path, and either/both the user and owner
+# passwords set on the source PDF document.  The convert method returns the
+# HTML as a string for further manipulation of loading into a Document.
+#
+# Requires that pdftohtml be installed and on the path
+#
+# Author:: Kit Plummer (mailto:kitplummer@gmail.com)
+# Copyright:: Copyright (c) 2009 Kit Plummer
+# License:: MIT
+
 require 'rubygems'
 require 'open3'
 
 module PDFToHTMLR
+  
+  # Simple local error abstraction
   class PDFToHTMLRError < RuntimeError; end
+  
   VERSION = '0.2.0'
 
+  # Provides facilities for converting PDFs to HTML from Ruby code.
   class PdfFile
     attr :path
     attr :target
@@ -24,6 +39,7 @@ module PDFToHTMLR
       
     end
 
+    # Convert the PDF document to HTML.  Returns a string
     def convert()
       errors = ""
       output = ""

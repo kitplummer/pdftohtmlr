@@ -8,13 +8,20 @@ h1. requirements
 
 Just pdftohtml and Ruby (1.8.6+ as far as I know).
 
+h1. install
+
+"http://gemcutter.org/gems/pdftohtmlr":"http://gemcutter.org/gems/pdftohtmlr"
+
+<pre><code>gem install pdftohtmlr</code></pre>
+    
 h1. using
-<pre>
-<code>
+<pre><code>require 'pdftohtmlr'
 file = PdfFile.new([Path to Source PDF], 
                    [Target File (not implemented yet)], 
                    [user password], 
                    [owner password])
-doc = file.convert
-</code>
-</pre>
+doc = file.convert</code></pre>
+
+h1. license
+
+MIT
