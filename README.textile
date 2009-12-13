@@ -15,12 +15,14 @@ h1. install
 <pre><code>gem install pdftohtmlr</code></pre>
     
 h1. using
-<pre><code>require 'pdftohtmlr'
+<pre><code lang="ruby">require 'pdftohtmlr'
+require 'nokogiri'
 file = PdfFile.new([Path to Source PDF], 
                    [Target File (not implemented yet)], 
                    [user password], 
                    [owner password])
-doc = file.convert</code></pre>
+string = file.convert
+doc = file.convert_to_document()</code></pre>
 
 h1. license
 
