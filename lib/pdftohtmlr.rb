@@ -11,6 +11,7 @@
 
 require 'rubygems'
 require 'open3'
+require 'nokogiri'
 
 module PDFToHTMLR
   
@@ -63,6 +64,11 @@ module PDFToHTMLR
       else
         return output
       end
+    end
+    
+    # Convert the PDF document to HTML.  Returns a Nokogiri::HTML:Document
+    def convert_to_document() 
+      Nokogiri::HTML.parse(convert())
     end
     
   end

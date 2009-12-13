@@ -20,7 +20,6 @@ class PdfFileTest < Test::Unit::TestCase
       file = PdfFile.new(TEST_NON_PDF, ".", nil, nil)
       file.convert
     end
-    puts e
   end
 
   def test_bad_pdffile_new
@@ -48,5 +47,15 @@ class PdfFileTest < Test::Unit::TestCase
     assert_equal `pdftohtml -stdout -upw user #{TEST_PWD_PDF_PATH}`,
     file.convert()
   end
-
+  
+  def test_return_document
+    file = PdfFile.new(TEST_PDF_PATH, ".", nil, nil)
+    assert_equal "Nokogiri::HTML::Document",
+     file.convert_to_document().class.to_s
+    assert_equal Nokogiri::HTML.parse(
+        `pdftohtml -stdout -upw user #{TEST_PWD_PDF_PATH}`
+      ).css('body').first.to_s,
+       file.convert_to_document().css('body').first.to_s
+  end
+  
 end
