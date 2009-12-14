@@ -18,7 +18,7 @@ desc "Clean generated files"
 task :clean do
   rm FileList['test/output/*.png']
   rm_rf 'pkg'
-  rm_rf 'doc'
+  rm_rf 'rdoc'
 end
 
 desc 'Test the pdftohtmlr gem.'
@@ -32,8 +32,8 @@ desc 'Generate documentation for the pdftohtmlr gem.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'pdftohtmlr'
-  rdoc.options << '--line-numbers --inline-source'
-  rdoc.rdoc_files.include('README')
+  rdoc.options << '--line-numbers'
+  rdoc.rdoc_files.include('README.textile')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 

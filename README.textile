@@ -15,15 +15,17 @@ h1. install
 <pre><code>gem install pdftohtmlr</code></pre>
     
 h1. using
+<script src="http://gist.github.com/254556.js?file=pdftohtmlr_example.rb">
+</script>
+
 <pre><code lang="ruby">require 'pdftohtmlr'
 require 'nokogiri'
-file = PdfFile.new([Path to Source PDF], 
-                   [Target File (not implemented yet)], 
-                   [user password], 
-                   [owner password])
+file = PdfFilePath.new([Path to Source PDF])
 string = file.convert
 doc = file.convert_to_document()</code></pre>
 
+See included test cases for more usage examples, including passwords and URL fetching.
+
 h1. license
 
-MIT
+MIT (See included MIT-LICENSE)

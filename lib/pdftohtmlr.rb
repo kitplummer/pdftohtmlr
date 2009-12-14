@@ -12,13 +12,16 @@
 require 'rubygems'
 require 'open3'
 require 'nokogiri'
+require 'uri'
+require 'open-uri'
+require 'tempfile'
 
 module PDFToHTMLR
   
   # Simple local error abstraction
   class PDFToHTMLRError < RuntimeError; end
   
-  VERSION = '0.2.0'
+  VERSION = '0.3.0'
 
   # Provides facilities for converting PDFs to HTML from Ruby code.
   class PdfFile
@@ -27,17 +30,11 @@ module PDFToHTMLR
     attr :user_pwd
     attr :owner_pwd
 
-    def initialize(input_path, target_path, user_pwd, owner_pwd)
+    def initialize(input_path, target_path=nil, user_pwd=nil, owner_pwd=nil)
       @path = input_path
       @target = target_path
       @user_pwd = user_pwd
-      @owner_pwd = owner_pwd
-
-      # check to make sure file is legit
-      if (!File.exist?(@path))
-        raise PDFToHTMLRError, "invalid file path"
-      end
-      
+      @owner_pwd = owner_pwd      
     end
 
     # Convert the PDF document to HTML.  Returns a string
@@ -60,7 +57,7 @@ module PDFToHTMLR
       end
 
       if (errors != "")
-        raise PDFToHTMLRError, errors.to_s
+        raise PDFToHTMLRError, errors.first.to_s.chomp
       else
         return output
       end
@@ -71,5 +68,35 @@ module PDFToHTMLR
       Nokogiri::HTML.parse(convert())
     end
     
+  end
+  
+  # Handle a string-based local path as input, extends PdfFile
+  class PdfFilePath < PdfFile
+    def initialize(input_path, target_path=nil, user_pwd=nil, owner_pwd=nil)
+      # check to make sure file is legit
+      if (!File.exist?(input_path))
+        raise PDFToHTMLRError, "invalid file path"
+      end
+      
+      super(input_path, target_path, user_pwd, owner_pwd)
+      
+    end 
+  end
+  
+  # Handle a URI as a remote path to a PDF, extends PdfFile
+  class PdfFileUrl < PdfFile
+    def initialize(input_url, target_path=nil, user_pwd=nil, owner_pwd=nil)
+      # check to make sure file is legit
+      begin
+        if ((input_url =~ URI::regexp).nil?)
+          raise PDFToHTMLRError, "invalid file url"
+        end
+        tempfile = Tempfile.new('pdftohtmlr')
+        File.open(tempfile.path, 'w') {|f| f.write(open(input_url).read) }
+        super(tempfile.path, target_path, user_pwd, owner_pwd)
+      rescue => bang
+        raise PDFToHTMLRError, bang.to_s
+      end
+    end
   end
 end

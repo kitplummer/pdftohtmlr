@@ -9,53 +9,92 @@ class PdfFileTest < Test::Unit::TestCase
   TEST_PWD_PDF_PATH = CURRENT_DIR + "test_pw.pdf"
   TEST_BAD_PATH = "blah.pdf"
   TEST_NON_PDF = CURRENT_DIR + "pdftohtmlr_test.rb"
-  
+  TEST_URL_PDF =
+   "http://github.com/kitplummer/pdftohtmlr/raw/master/test/test.pdf"
+  TEST_URL_NON_PDF =
+   "http://github.com/kitplummer/pdftohtmlr/raw/master/test/pdftohtmlr_test.rb"
   def test_pdffile_new
-    file = PdfFile.new(TEST_PDF_PATH, ".", nil, nil)
+    file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
     assert file
   end
   
   def test_invalid_pdffile
     e = assert_raise PDFToHTMLRError do 
-      file = PdfFile.new(TEST_NON_PDF, ".", nil, nil)
+      file = PdfFilePath.new(TEST_NON_PDF, ".", nil, nil)
       file.convert
     end
+    assert_equal "Error: May not be a PDF file (continuing anyway)", e.to_s
   end
 
   def test_bad_pdffile_new
-    assert_raise PDFToHTMLRError do
-      file = PdfFile.new(TEST_BAD_PATH, ".", nil, nil)
+    e = assert_raise PDFToHTMLRError do
+      file = PdfFilePath.new(TEST_BAD_PATH, ".", nil, nil)
     end
+    assert_equal "invalid file path", e.to_s
   end
 
   def test_string_from_pdffile
-    file = PdfFile.new(TEST_PDF_PATH, ".", nil, nil)
+    file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
     assert_equal "String", file.convert().class.to_s
     assert_equal `pdftohtml -stdout #{TEST_PDF_PATH}`, file.convert() 
   end 
 
   def test_invalid_pwd_pdffile
-    assert_raise PDFToHTMLRError do
-      file = PdfFile.new(TEST_PWD_PDF_PATH, ".", "blah", nil)
+    e = assert_raise PDFToHTMLRError do
+      file = PdfFilePath.new(TEST_PWD_PDF_PATH, ".", "blah", nil)
       file.convert
     end
+    assert_equal "Error: Incorrect password", e.to_s
   end
 
   def test_valid_pwd_pdffile
-    file = PdfFile.new(TEST_PWD_PDF_PATH, ".", "user", nil)
+    file = PdfFilePath.new(TEST_PWD_PDF_PATH, ".", "user", nil)
     assert_equal "String", file.convert().class.to_s
     assert_equal `pdftohtml -stdout -upw user #{TEST_PWD_PDF_PATH}`,
     file.convert()
   end
   
   def test_return_document
-    file = PdfFile.new(TEST_PDF_PATH, ".", nil, nil)
+    file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
     assert_equal "Nokogiri::HTML::Document",
      file.convert_to_document().class.to_s
     assert_equal Nokogiri::HTML.parse(
-        `pdftohtml -stdout -upw user #{TEST_PWD_PDF_PATH}`
+        `pdftohtml -stdout #{TEST_PDF_PATH}`
       ).css('body').first.to_s,
        file.convert_to_document().css('body').first.to_s
   end
   
+  def test_invalid_URL_pdffile
+    e = assert_raise PDFToHTMLRError do
+      file = PdfFileUrl.new("blah", ".", nil, nil)
+    end
+    assert_equal "invalid file url", e.to_s
+  end
+  
+  def test_invalid_URL_resource_pdffile
+    e = assert_raise PDFToHTMLRError do
+      file = PdfFileUrl.new("http://github.com/kitplummer/blah", ".", nil, nil)
+    end
+    assert_equal "404 Not Found", e.to_s
+  end
+  
+  def test_invalid_URL_pdf_pdffile
+    e = assert_raise PDFToHTMLRError do
+      file = PdfFileUrl.new(TEST_URL_NON_PDF, ".", nil, nil)
+      file.convert
+    end
+    assert_equal "Error: May not be a PDF file (continuing anyway)", e.to_s
+  end
+  
+  def test_valid_URL_pdffile
+    # http://github.com/kitplummer/pdftohtmlr/raw/master/test/test.pdf
+    file = PdfFileUrl.new(TEST_URL_PDF, ".", nil, nil)
+    assert_equal "String", file.convert().class.to_s
+    assert_equal `pdftohtml -stdout #{TEST_PDF_PATH}`, file.convert()
+  end
+  
+  def test_args
+    file = PdfFileUrl.new(TEST_URL_PDF)
+    assert_equal "String", file.convert().class.to_s
+  end
 end
