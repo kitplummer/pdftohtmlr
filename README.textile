@@ -15,8 +15,7 @@ h1. install
 <pre><code>gem install pdftohtmlr</code></pre>
     
 h1. using
-<script src="http://gist.github.com/254556.js?file=pdftohtmlr_example.rb">
-</script>
+"gist examples":http://gist.github.com/254556.js?file=pdftohtmlr_example.rb"
 
 <pre><code lang="ruby">require 'pdftohtmlr'
 require 'nokogiri'
