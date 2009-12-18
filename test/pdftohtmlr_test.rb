@@ -59,7 +59,7 @@ class PdfFileTest < Test::Unit::TestCase
     assert_equal "Nokogiri::HTML::Document",
      file.convert_to_document().class.to_s
     assert_equal Nokogiri::HTML.parse(
-        `pdftohtml -stdout #{TEST_PDF_PATH}`
+        `pdftohtml -stdout "#{TEST_PDF_PATH}"`
       ).css('body').first.to_s,
        file.convert_to_document().css('body').first.to_s
   end

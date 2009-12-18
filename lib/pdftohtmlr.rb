@@ -53,7 +53,7 @@ module PDFToHTMLR
       if (output.include?("Error: May not be a PDF file"))
         raise PDFToHTMLRError, "Error: May not be a PDF file (continuing anyway)"
       elsif (output.include?("Error:"))
-        raise PDFToHTMLRError, output.to_s.chomp
+        raise PDFToHTMLRError, output.split("\n").first.to_s.chomp
       else
         return output
       end
