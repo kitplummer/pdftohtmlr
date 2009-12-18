@@ -10,7 +10,6 @@
 # License:: MIT
 
 require 'rubygems'
-require 'open3'
 require 'nokogiri'
 require 'uri'
 require 'open-uri'
@@ -21,7 +20,7 @@ module PDFToHTMLR
   # Simple local error abstraction
   class PDFToHTMLRError < RuntimeError; end
   
-  VERSION = '0.3.1'
+  VERSION = '0.4'
 
   # Provides facilities for converting PDFs to HTML from Ruby code.
   class PdfFile
@@ -42,22 +41,19 @@ module PDFToHTMLR
       errors = ""
       output = ""
       if @user_pwd 
-        cmd = "pdftohtml -stdout -upw #{@user_pwd} #{@path}"    
+        cmd = "pdftohtml -stdout -upw #{@user_pwd}" + ' "' + @path + '"'    
       elsif @owner_pwd 
-        cmd = "pdftohtml -stdout -opw #{@owner_pwd} #{@path}"
+        cmd = "pdftohtml -stdout -opw #{@owner_pwd}" + ' "' + @path + '"'
       else
-        cmd = "pdftohtml -stdout #{@path}"
+        cmd = "pdftohtml -stdout" + ' "' + @path + '"'
       end
       
-      Open3.popen3 cmd do | stdin, stdout, stderr|
-        stdin.write cmd
-        stdin.close
-        output = stdout.read
-        errors = stderr.read
-      end
+      output = `#{cmd} 2>&1`
 
-      if (errors != "")
-        raise PDFToHTMLRError, errors.first.to_s.chomp
+      if (output.include?("Error: May not be a PDF file"))
+        raise PDFToHTMLRError, "Error: May not be a PDF file (continuing anyway)"
+      elsif (output.include?("Error:"))
+        raise PDFToHTMLRError, output.to_s.chomp
       else
         return output
       end
@@ -67,7 +63,6 @@ module PDFToHTMLR
     def convert_to_document() 
       Nokogiri::HTML.parse(convert())
     end
-    
   end
   
   # Handle a string-based local path as input, extends PdfFile

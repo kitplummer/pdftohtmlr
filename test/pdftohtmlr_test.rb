@@ -36,7 +36,7 @@ class PdfFileTest < Test::Unit::TestCase
   def test_string_from_pdffile
     file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
     assert_equal "String", file.convert().class.to_s
-    assert_equal `pdftohtml -stdout #{TEST_PDF_PATH}`, file.convert() 
+    assert_equal `pdftohtml -stdout "#{TEST_PDF_PATH}"`, file.convert() 
   end 
 
   def test_invalid_pwd_pdffile
@@ -50,7 +50,7 @@ class PdfFileTest < Test::Unit::TestCase
   def test_valid_pwd_pdffile
     file = PdfFilePath.new(TEST_PWD_PDF_PATH, ".", "user", nil)
     assert_equal "String", file.convert().class.to_s
-    assert_equal `pdftohtml -stdout -upw user #{TEST_PWD_PDF_PATH}`,
+    assert_equal `pdftohtml -stdout -upw user "#{TEST_PWD_PDF_PATH}"`,
     file.convert()
   end
   
@@ -90,7 +90,7 @@ class PdfFileTest < Test::Unit::TestCase
     # http://github.com/kitplummer/pdftohtmlr/raw/master/test/test.pdf
     file = PdfFileUrl.new(TEST_URL_PDF, ".", nil, nil)
     assert_equal "String", file.convert().class.to_s
-    assert_equal `pdftohtml -stdout #{TEST_PDF_PATH}`, file.convert()
+    assert_equal `pdftohtml -stdout "#{TEST_PDF_PATH}"`, file.convert()
   end
   
   def test_args
