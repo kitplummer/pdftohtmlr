@@ -55,7 +55,7 @@ spec = Gem::Specification.new do |s|
   s.requirements << 'none'
   s.require_path = 'lib'
   s.autorequire = 'pdftohtml'
-
+  s.add_dependency("nokogiri", ">= 1.3.3")
   s.files = [ "Rakefile", "README.textile", "MIT-LICENSE" ]
   s.files = s.files + Dir.glob( "lib/**/*" ).delete_if { |item| item.include?( "\.svn" ) }
   s.files = s.files + Dir.glob( "test/**/*" ).delete_if { |item| item.include?( "\.svn" ) || item.include?("\.png") }
