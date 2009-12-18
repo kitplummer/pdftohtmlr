@@ -87,7 +87,7 @@ module PDFToHTMLR
           raise PDFToHTMLRError, "invalid file url"
         end
         tempfile = Tempfile.new('pdftohtmlr')
-        File.open(tempfile.path, 'w') {|f| f.write(open(input_url).read) }
+        File.open(tempfile.path, 'wb') {|f| f.write(open(input_url).read) }
         super(tempfile.path, target_path, user_pwd, owner_pwd)
       rescue => bang
         raise PDFToHTMLRError, bang.to_s
