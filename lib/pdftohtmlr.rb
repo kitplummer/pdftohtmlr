@@ -20,7 +20,7 @@ module PDFToHTMLR
   # Simple local error abstraction
   class PDFToHTMLRError < RuntimeError; end
   
-  VERSION = '0.4'
+  VERSION = '0.4.1'
 
   # Provides facilities for converting PDFs to HTML from Ruby code.
   class PdfFile
@@ -28,7 +28,8 @@ module PDFToHTMLR
     attr :target
     attr :user_pwd
     attr :owner_pwd
-
+    attr :format
+    
     def initialize(input_path, target_path=nil, user_pwd=nil, owner_pwd=nil)
       @path = input_path
       @target = target_path
@@ -40,12 +41,13 @@ module PDFToHTMLR
     def convert()
       errors = ""
       output = ""
+      
       if @user_pwd 
-        cmd = "pdftohtml -stdout -upw #{@user_pwd}" + ' "' + @path + '"'    
+        cmd = "pdftohtml -stdout #{@format} -upw #{@user_pwd}" + ' "' + @path + '"'    
       elsif @owner_pwd 
-        cmd = "pdftohtml -stdout -opw #{@owner_pwd}" + ' "' + @path + '"'
+        cmd = "pdftohtml -stdout #{@format} -opw #{@owner_pwd}" + ' "' + @path + '"'
       else
-        cmd = "pdftohtml -stdout" + ' "' + @path + '"'
+        cmd = "pdftohtml -stdout #{@format}" + ' "' + @path + '"'
       end
       
       output = `#{cmd} 2>&1`
@@ -62,6 +64,16 @@ module PDFToHTMLR
     # Convert the PDF document to HTML.  Returns a Nokogiri::HTML:Document
     def convert_to_document() 
       Nokogiri::HTML.parse(convert())
+    end
+    
+    def convert_to_xml()
+      @format = "-xml"
+      convert()
+    end
+    
+    def convert_to_xml_document()
+      @format = "-xml"
+      Nokogiri::XML.parse(convert())
     end
   end
   

@@ -64,6 +64,21 @@ class PdfFileTest < Test::Unit::TestCase
        file.convert_to_document().css('body').first.to_s
   end
   
+  def test_return_xml
+    file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
+    assert_equal "String", file.convert_to_xml().class.to_s
+  end
+  
+  def test_return_xml_document
+    file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
+    assert_equal "Nokogiri::XML::Document",
+     file.convert_to_xml_document().class.to_s
+    assert_equal Nokogiri::XML.parse(
+        `pdftohtml -stdout -xml "#{TEST_PDF_PATH}"`
+      ).css('text').first.to_s,
+       file.convert_to_document().css('text').first.to_s
+  end
+  
   def test_invalid_URL_pdffile
     e = assert_raise PDFToHTMLRError do
       file = PdfFileUrl.new("blah", ".", nil, nil)
