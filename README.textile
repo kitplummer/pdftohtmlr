@@ -9,7 +9,7 @@ h1. Requirements
 Just pdftohtml and Ruby (1.8.6+ as far as I know).
 
 On Mac:
-<pre><code>brew install pdftohtml</pre><code>
+<pre><code>brew install pdftohtml</pre></code>
     
 On Ubuntu:
 It should be installed by default with the 'poppler-utils' package.
