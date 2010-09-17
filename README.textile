@@ -4,21 +4,29 @@ Wrapper around the command line tool pdftohtml which converts PDF to HTML, go fi
 
 This gem was inspired by the MiniMagick gem - which does the same thing for ImageMagick (thanks Corey).
 
-h1. requirements
+h1. Requirements
 
 Just pdftohtml and Ruby (1.8.6+ as far as I know).
 
-h1. install
+On Mac:
+<pre><code>brew install pdftohtml</pre><code>
+    
+On Ubuntu:
+It should be installed by default with the 'poppler-utils' package.
+
+h1. Install
 
 "http://gemcutter.org/gems/pdftohtmlr":http://gemcutter.org/gems/pdftohtmlr
 
 <pre><code>gem install pdftohtmlr</code></pre>
     
-h1. using
+h1. Using
+
 "gist examples":http://gist.github.com/254556
 
 <pre><code lang="ruby">require 'pdftohtmlr'
 require 'nokogiri'
+include PDFToHTMLR
 file = PdfFilePath.new([Path to Source PDF])
 string = file.convert
 doc = file.convert_to_document()</code></pre>
