@@ -10,9 +10,9 @@ class PdfFileTest < Test::Unit::TestCase
   TEST_BAD_PATH = "blah.pdf"
   TEST_NON_PDF = CURRENT_DIR + "pdftohtmlr_test.rb"
   TEST_URL_PDF =
-   "http://github.com/kitplummer/pdftohtmlr/raw/master/test/test.pdf"
+   "http://dl.dropbox.com/u/1627760/test.pdf"
   TEST_URL_NON_PDF =
-   "http://github.com/kitplummer/pdftohtmlr/raw/master/test/pdftohtmlr_test.rb"
+   "http://dl.dropbox.com/u/1627760/pdftohtmlr_test.rb"
   def test_pdffile_new
     file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
     assert file
@@ -88,7 +88,7 @@ class PdfFileTest < Test::Unit::TestCase
   
   def test_invalid_URL_resource_pdffile
     e = assert_raise PDFToHTMLRError do
-      file = PdfFileUrl.new("http://github.com/kitplummer/blah", ".", nil, nil)
+      file = PdfFileUrl.new("http://zyx.com/kitplummer/blah", ".", nil, nil)
     end
     assert_equal "404 Not Found", e.to_s
   end
