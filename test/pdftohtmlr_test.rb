@@ -10,9 +10,9 @@ class PdfFileTest < Test::Unit::TestCase
   TEST_BAD_PATH = "blah.pdf"
   TEST_NON_PDF = CURRENT_DIR + "pdftohtmlr_test.rb"
   TEST_URL_PDF =
-   "http://dl.dropbox.com/u/1627760/test.pdf"
+   "https://s3.amazonaws.com/pdf2htmlr/test.pdf"
   TEST_URL_NON_PDF =
-   "http://dl.dropbox.com/u/1627760/pdftohtmlr_test.rb"
+   "https://s3.amazonaws.com/pdf2htmlr/pdftohtmlr_test.rb"
   def test_pdffile_new
     file = PdfFilePath.new(TEST_PDF_PATH, ".", nil, nil)
     assert file
